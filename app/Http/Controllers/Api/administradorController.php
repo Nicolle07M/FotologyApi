@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+
 use Illuminate\Http\Request;
 use App\Models\Administrador;
 use Illuminate\Support\Facades\Validator;
@@ -41,9 +43,11 @@ class administradorController extends Controller
             return response()->json($data, 400);
         }
 
+        $passwordHashed = Hash::make($request->password);
+
         $administrador = Administrador::create([
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => $passwordHashed, // Almacenar la contraseña encriptada
         ]);
 
         if (!$administrador) {

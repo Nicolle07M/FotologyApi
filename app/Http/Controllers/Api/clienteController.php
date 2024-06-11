@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\Cliente;
 use Illuminate\Support\Facades\Validator;
@@ -48,6 +49,9 @@ class clienteController extends Controller
             return response()->json($data, 400);
         }
 
+        // Encriptar la contraseña
+        $passwordHashed = Hash::make($request->password);
+
         $cliente = Cliente::create([
             'nameUser' => $request->nameUser,
             'username'=> $request->username,
@@ -56,7 +60,7 @@ class clienteController extends Controller
             'birthday' => $request->birthday,
             'image' => $request->image,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => $passwordHashed, // Almacenar la contraseña encriptada
         ]);
 
         if (!$cliente) {
