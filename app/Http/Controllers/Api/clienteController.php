@@ -96,6 +96,8 @@ class clienteController extends Controller
 
     }
 
+    //DELETE//
+
     public function destroy($id)
     {
         $cliente = Cliente::find($id);
@@ -117,6 +119,8 @@ class clienteController extends Controller
         return response()->json($data, 200);
     }
 
+
+    //UPDATE//
     public function update(Request $request, $id)
     {
         $cliente = Cliente::find($id);
@@ -170,8 +174,12 @@ class clienteController extends Controller
 
     }
 
+    //PATCH//
     public function updatePartial(Request $request, $id)
     {
+
+        $cliente = Cliente::find($id);
+
         if(!$cliente) {
             $data = [
                 'message' => 'No hay clientes encontrados',
@@ -181,14 +189,14 @@ class clienteController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'nameUser' => 'required|max:255',
-            'username'=> 'required|unique:cliente',
-            'phone' => 'required|digits:10',
-            'document' => 'required|digits:10|unique:cliente,document',
-            'birthday' => 'required|date',
-            'image' => 'required|',
-            'email' => 'required|email|unique:cliente',
-            'password' => 'required|max:15',
+            'nameUser' => 'max:255',
+            'username'=> 'unique:cliente',
+            'phone' => 'digits:10',
+            'document' => '|digits:10|unique:cliente,document',
+            'birthday' => 'date',
+            'image' => '',
+            'email' => 'email|unique:cliente',
+            'password' => 'max:15',
         ]);
 
         if ($validator->fails()) {
